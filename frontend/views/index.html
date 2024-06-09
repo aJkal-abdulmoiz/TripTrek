@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Booking System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo"><img src="./images/logo.jpg" alt=""></a>
+            <a href="/" class="brand-logo">TripTrek</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#packages-section-underdestinations">Packages</a></li>
+                <li><a href="#destination">Book</a></li>
+                <li><a href="#destination">Support</a></li>
+                <li><a href="mybookings">My Bookings</a></li>
+                <li><a href="login"><button id="login" class="login-btn">Login</button></a></li>
+                <li><button id="logout" class="login-btn">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-container container">
+                <div class="search-heading">
+                    <h1>Find Your Perfect Destination</h1>
+                </div>
+
+                
+                
+                <form id="searchForm">
+                    <div class="search-form-container">
+                        <div class="form-group">
+                            <input type="text" id="destination" placeholder="Where To?" name="destination" list="dList" required>
+                            <datalist id="dList">
+                                <option value="Taiwan">
+                                <option value="Iraq">
+                                <option value="Dubai"></option>
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="budget" placeholder="Budget" name="budget" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="no-of-ppl" placeholder="People" name="no-of-ppl" required>
+                        </div>
+                        <button class="login-btn" type="submit">Search</button>
+                    </div>
+                </form>
+                
+            </div>
+        </section>
+        
+        <section class="headline">
+            <h1>Get Your Trips Booked Now</h1>
+        
+            <div class="home-btn">
+                <a href="#destination"><button>Check Travel Locations</button></a>
+            </div>
+          </section>
+    
+
+    <div class="gap">
+    </div>
+        <section id="features">
+            <div class="pure-white">
+                <div>
+                    <h2>We Offer Travelling</h2>
+                    <h2>From Any Location</h2>
+                </div>
+                <div class="s-container">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h5>We Offer Calculating Real-Time Rates</h5>
+                    <p>Lorem ipsum dolor sit</p>
+                </div>
+                <div class="s-container">
+                    <i class="fas fa-compass"></i>
+                    <h5>Best Tour Guide</h5>
+                    <p>Lorem ipsum dolor sit</p>
+                </div>
+                <div class="s-container">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h5>Highly Affordable</h5>
+                    <p>Lorem ipsum dolor sit</p>
+                </div>
+            </div>
+        </section>
+    
+    
+        <section class="destinations" id="destination">
+            <div class="dest-container">
+                <div>
+                    <h2 class="destination-heading">The Perfect Travel Destinations</h2>
+                </div>
+                <div id="destinationList" class="destination-list">
+    
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <hr>
+        <div class="container">
+            
+            <p>&nbsp;&nbsp;&copy; 2024 TripTrek</p>
+        </div>
+    </footer>
+
+    <script src="../js/index.js"></script>
+    <script src="https://kit.fontawesome.com/afffd7e094.js" crossorigin="anonymous"></script>
+</body>
+</html>

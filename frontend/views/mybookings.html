@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="css/mybookings.css">
+</head>
+<body>
+    <h1>My Bookings</h1>
+    <div id="bookingsList" class="bookings-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('/mybookings/getbookings', {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch bookings');
+                }
+
+                const bookings = await response.json();
+                const bookingsList = document.getElementById('bookingsList');
+                bookings.forEach(booking => {
+                    const bookingContainer = document.createElement('div');
+                    bookingContainer.classList.add('booking');
+                    bookingContainer.style.backgroundImage = `url('./images/${booking.destination.toLowerCase()}.jpg')`;
+                    bookingContainer.innerHTML = `
+                        <div class="booking-info">
+                            <p><b>Booking Name:</b> ${booking.name}</p>
+                            <p class="destination"><b>Destination:</b> ${booking.destination}</p>
+                            <p><b>Date:</b> ${booking.date}</p>
+                            <p><b>Total Persons:</b> ${booking.persons}</p>
+                            <p><b>Total Price:</b> ${booking.price + 1000} PKR </p>
+                        </div>
+                        <button class="close-btn">X</button>
+                        <div class="buttons">
+                            <button class="Contact-Driver" style="display: none;">Contact Driver</button>
+                            <button class="Contact-Driver">More Details</button>
+                            <button class="pay-btn" data-name="${booking.name}" data-price="${booking.price}">Pay</button>
+                        </div>
+                    `;
+                    bookingsList.appendChild(bookingContainer);
+
+                    // Add event listener to close button for this booking
+                    const closeButton = bookingContainer.querySelector('.close-btn');
+                    closeButton.addEventListener('click', function() {
+                        const destination = bookingContainer.querySelector('.destination').textContent;
+                        if (confirm('Are you sure you want to delete this booking?')) {
+                            deleteBooking(destination, bookingContainer);
+                        }
+                    });
+                });
+
+                const payButtons = document.querySelectorAll('.pay-btn');
+                payButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const name = this.getAttribute('data-name');
+                        const price = this.getAttribute('data-price');
+                        initiatePayment(name, price);
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+            }
+        });
+
+        function deleteBooking(destination, bookingContainer) {
+            fetch('/mybookings/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ destination })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to delete booking');
+                }
+            })
+            .then(data => {
+                console.log(data.message);
+                // Optionally, provide feedback to the user
+                alert('Booking deleted successfully');
+                // Remove the booking from the UI
+                bookingContainer.remove();
+            })
+            .catch(error => {
+                console.error('Error deleting booking:', error);
+                // Optionally, provide feedback to the user
+                alert('Failed to delete booking');
+            });
+        }
+
+        function initiatePayment(name, price) {
+            fetch('/mybookings/pay', {
+                mode: 'no-cors',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, price })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to initiate payment');
+                }
+            })
+            .then(data => {
+                window.location.href = data.approvalUrl;
+                // Show "Contact Driver" button after payment is successful
+                const contactDriverButton = document.querySelector('.Contact-Driver');
+                contactDriverButton.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error initiating PayPal payment:', error);
+                // Optionally, provide feedback to the user
+                alert('Failed to initiate payment');
+            });
+        }
+    </script>
+</body>
+</html>
