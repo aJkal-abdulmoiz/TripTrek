@@ -7,8 +7,8 @@ const paypal = require('paypal-rest-sdk');
 // Configure PayPal SDK
 paypal.configure({
     'mode': 'sandbox', 
-    'client_id': '',
-    'client_secret': ''
+    'client_id': 'Your Paypal client id',
+    'client_secret': 'Your paypal client secret'
 });
 
 const initiatePayment = (req, res) => {
